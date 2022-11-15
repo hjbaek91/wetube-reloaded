@@ -21,9 +21,11 @@ app.use(
   })
 );
 
-app.get("/add-one", (req, res, next) => {
-  req.session.potato += 1;
-  return res.send(`${req.session.id} ${req.session.potato}`);
+app.use((req, res, next) => {
+  req.sessionStore.all((error, sessions) => {
+    console.log(sessions);
+    next();
+  });
 });
 
 app.use("/", rootRouter);
