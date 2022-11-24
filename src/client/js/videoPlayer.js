@@ -6,7 +6,7 @@ const playBtnIcon = playBtn.querySelector("i");
 const muteBtn = document.getElementById("mute");
 const muteBtnIcon = muteBtn.querySelector("i");
 const volumeRange = document.getElementById("volume");
-const currentTime = document.getElementById("currentTime");
+const currenTime = document.getElementById("currenTime");
 const totalTime = document.getElementById("totalTime");
 const timeline = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
@@ -17,23 +17,18 @@ const videoControls = document.getElementById("videoControls");
 let controlsTimeout = null;
 let controlsMovementTimeout = null;
 let volumeValue = 0.5;
-video.volume = 0.5;
+video.volume = volumeValue;
 
 const handlePlayClick = (e) => {
-  // if the video is playing, pause it
   if (video.paused) {
     video.play();
   } else {
     video.pause();
   }
-  // else play the video
   playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
 };
 
-const handlePause = () => (playBtn.innerText = "Play");
-const handlePlay = () => (playBtn.innerText = "Pause");
-
-const handleMute = (e) => {
+const handleMuteClick = (e) => {
   if (video.muted) {
     video.muted = false;
   } else {
@@ -66,7 +61,7 @@ const handleLoadedMetadata = () => {
 };
 
 const handleTimeUpdate = () => {
-  currentTime.innerText = formatTime(Math.floor(video.currentTime));
+  currenTime.innerText = formatTime(Math.floor(video.currentTime));
   timeline.value = Math.floor(video.currentTime);
 };
 
@@ -114,16 +109,16 @@ const handleSpacePlay = (event) => {
 };
 
 const handleEnded = () => {
-  const { id } = videoControls.dataset;
+  const { id } = videoContainer.dataset;
   fetch(`/api/videos/${id}/view`, {
     method: "POST",
   });
 };
 
 playBtn.addEventListener("click", handlePlayClick);
-muteBtn.addEventListener("click", handleMute);
+muteBtn.addEventListener("click", handleMuteClick);
 volumeRange.addEventListener("input", handleVolumeChange);
-video.addEventListener("loadeddata", handleLoadedMetadata);
+video.addEventListener("loadedmetadata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
 video.addEventListener("ended", handleEnded);
 videoContainer.addEventListener("mousemove", handleMouseMove);
