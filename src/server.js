@@ -27,6 +27,13 @@ app.use(
 );
 app.use(flash());
 app.use(localsMiddlware);
+
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+});
+
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("assets"));
 app.use("/ffmpeg", express.static("node_modules/@ffmpeg/core/dist"));
